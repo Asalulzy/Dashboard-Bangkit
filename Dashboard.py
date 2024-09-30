@@ -1,10 +1,21 @@
-import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit as st
 import datetime
 
-# Fungsi untuk mengklasifikasikan musim berdasarkan suhu
+# Set style for the plots
+sns.set(style='whitegrid')
+
+
+data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
+data = pd.read_csv(data_path)
+
+# Check if 'datetime' exists and convert it
+if 'datetime' in df.columns:
+    df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')  # Convert to datetime
+
+# Helper function to classify season based on temperature
 def classify_season(temp):
     if temp < 0:
         return 'Gelombang Dingin'
@@ -12,16 +23,14 @@ def classify_season(temp):
         return 'Musim Dingin'
     elif 10 <= temp < 20:
         return 'Musim Semi'
-    elif 20 <= temp < 35:
+    elif 20 <= temp < 30:
         return 'Musim Panas'
+    elif 30 <= temp < 35:
+        return 'Musim Panas Intens'
     elif temp >= 35:
         return 'Gelombang Panas'
     else:
         return 'Tidak Diketahui'
-
-# Load Data
-data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
-data = pd.read_csv(data_path)
 
 # Add a season column based on temperature
 df['Season'] = df['TEMP'].apply(classify_season)
@@ -62,12 +71,16 @@ st.pyplot(fig)
 # Time-series plot of NO2 over time
 st.subheader('NO2 Concentration Over Time')
 
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.lineplot(x=filtered_data['datetime'], y=filtered_data['NO2'], ax=ax)
-ax.set_title('NO2 Concentration Over Time')
-ax.set_xlabel('Date')
-ax.set_ylabel('NO2 Concentration (µg/m³)')
-st.pyplot(fig)
+if not filtered_data.empty:
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.lineplot(x=filtered_data['datetime'], y=filtered_data['NO2'], ax=ax)
+    ax.set_title('NO2 Concentration Over Time')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('NO2 Concentration (µg/m³)')
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+else:
+    st.warning("Tidak ada data untuk musim ini.")
 
 # Additional plots and analytics can be added similarly
 st.caption('Air Quality Data Dashboard © 2024')
