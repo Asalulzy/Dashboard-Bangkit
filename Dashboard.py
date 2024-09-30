@@ -21,7 +21,7 @@ def classify_season(temp):
         return 'Tidak Diketahui'
 
 # Load Data
-data_path = 'https://github.com/Asalulzy/Dashboard-Bangkit/tree/c837f8b36a4e49c7202e8577e507317f7850194f/Dataset'  # Path ke data CSV-mu
+data_path = 'https://github.com/Asalulzy/Dashboard-Bangkit/tree/c837f8b36a4e49c7202e8577e507317f7850194f/Dataset/PRSA_Data_Aotizhongxin_20130301-20170228.csv'  # Path ke data CSV-mu
 data = pd.read_csv(data_path)
 
 # Menambahkan kolom musim
