@@ -87,4 +87,17 @@ if 'TEMP' in data.columns and 'datetime' in data.columns:
 
         # Menggunakan st.cache_data untuk caching
         @st.cache_data
-        def conver
+        def convert_df(df):  # Memastikan tanda kurung "(" dan ":" ada
+            return df.to_csv().encode('utf-8')
+
+        csv = convert_df(filtered_data)
+        st.download_button(
+            label="Unduh data terfilter sebagai CSV",
+            data=csv,
+            file_name='data_filtered.csv',
+            mime='text/csv',
+        )
+    else:
+        st.warning("Tidak ada data untuk musim ini.")
+else:
+    st.error("Kolom 'TEMP' atau 'datetime' tidak ditemukan dalam data.")
