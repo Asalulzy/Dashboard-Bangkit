@@ -22,63 +22,51 @@ def classify_season(temp):
 data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
 data = pd.read_csv(data_path)
 
-# Menambahkan kolom musim
-data['Season'] = data['TEMP'].apply(classify_season)
+# Add a season column based on temperature
+df['Season'] = df['TEMP'].apply(classify_season)
 
-# Streamlit Layout
-st.title('Dashboard Analisis Polutan Udara')
-
-# Sidebar untuk pemilihan filter musim
-st.sidebar.header('Filter Data')
-selected_season = st.sidebar.selectbox('Pilih Musim:', data['Season'].unique())
-
-# Filter data berdasarkan pilihan pengguna
-filtered_data = data[data['Season'] == selected_season]
-st.write(f"Menampilkan data untuk musim: **{selected_season}**")
-
-# Line Plot untuk menunjukkan tren polutan udara
-st.header(f"Tren Polutan Udara untuk Musim {selected_season}")
-fig_line, ax_line = plt.subplots(figsize=(10, 6))
-sns.lineplot(data=filtered_data, x='datetime', y='NO2', label='NO2', color='blue')
-sns.lineplot(data=filtered_data, x='datetime', y='SO2', label='SO2', color='green')
-sns.lineplot(data=filtered_data, x='datetime', y='PM10', label='PM10', color='red')
-sns.lineplot(data=filtered_data, x='datetime', y='O3', label='O3', color='purple')
-ax_line.set_title(f'Tren Polutan Udara di Musim {selected_season}')
-ax_line.set_xlabel('Tanggal')
-ax_line.set_ylabel('Konsentrasi (µg/m³)')
-plt.xticks(rotation=45)
-st.pyplot(fig_line)
-
-# Box Plot untuk menunjukkan distribusi konsentrasi senyawa udara
-st.header(f"Distribusi Konsentrasi Senyawa Udara di Musim {selected_season}")
-fig_box, ax_box = plt.subplots(figsize=(10, 6))
-sns.boxplot(data=filtered_data[['NO2', 'SO2', 'PM10', 'O3']], ax=ax_box, palette='Set3')
-ax_box.set_title(f'Distribusi Konsentrasi Senyawa Udara di Musim {selected_season}')
-ax_box.set_ylabel('Konsentrasi (µg/m³)')
-st.pyplot(fig_box)
-
-# Bar Plot untuk membandingkan rata-rata konsentrasi senyawa udara
-st.header(f"Rata-rata Konsentrasi Senyawa Udara di Musim {selected_season}")
-mean_data = filtered_data[['NO2', 'SO2', 'PM10', 'O3']].mean()
-fig_bar, ax_bar = plt.subplots(figsize=(10, 6))
-sns.barplot(x=mean_data.index, y=mean_data.values, palette='viridis', ax=ax_bar)
-ax_bar.set_title(f'Rata-rata Konsentrasi Senyawa Udara di Musim {selected_season}')
-ax_bar.set_ylabel('Konsentrasi (µg/m³)')
-st.pyplot(fig_bar)
-
-# Menampilkan data tabel
-st.subheader('Tabel Data Terfilter')
-st.dataframe(filtered_data)
-
-# Menggunakan st.cache_data untuk caching
-@st.cache_data
-def convert_df(df):
-    return df.to_csv().encode('utf-8')
-
-csv = convert_df(filtered_data)
-st.download_button(
-    label="Unduh data terfilter sebagai CSV",
-    data=csv,
-    file_name='data_filtered.csv',
-    mime='text/csv',
+# Sidebar to filter by season
+st.sidebar.header("Filter Data")
+selected_season = st.sidebar.selectbox(
+    "Select Season:",
+    df['Season'].unique()
 )
+
+# Filter data by selected season
+filtered_data = df[df['Season'] == selected_season]
+
+# Create plots
+st.title('Air Quality Analysis Dashboard')
+
+# Show the selected season's data
+st.subheader(f'Data for {selected_season}')
+st.write(filtered_data)
+
+# Plot the concentration of air quality compounds by season
+st.subheader(f'Average Concentration of Compounds in {selected_season}')
+
+# Define compounds to visualize
+compounds = ['NO2', 'SO2', 'PM10', 'PM2.5']
+
+# Barplot of compound concentration by season
+avg_compound = filtered_data[compounds].mean()
+
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(x=avg_compound.index, y=avg_compound.values, ax=ax, palette='coolwarm')
+ax.set_title(f'Average Concentration of Air Compounds in {selected_season}')
+ax.set_xlabel('Compound')
+ax.set_ylabel('Concentration (µg/m³)')
+st.pyplot(fig)
+
+# Time-series plot of NO2 over time
+st.subheader('NO2 Concentration Over Time')
+
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.lineplot(x=filtered_data['datetime'], y=filtered_data['NO2'], ax=ax)
+ax.set_title('NO2 Concentration Over Time')
+ax.set_xlabel('Date')
+ax.set_ylabel('NO2 Concentration (µg/m³)')
+st.pyplot(fig)
+
+# Additional plots and analytics can be added similarly
+st.caption('Air Quality Data Dashboard © 2024')
