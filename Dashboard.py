@@ -32,9 +32,6 @@ if 'TEMP' in data.columns and 'datetime' in data.columns:
     # Mengonversi kolom 'datetime' menjadi tipe datetime
     data['datetime'] = pd.to_datetime(data['datetime'], errors='coerce')
 
-    # Memeriksa nilai yang hilang
-    st.write(data.isnull().sum())
-
     # Streamlit Layout
     st.title('Dashboard Analisis Polutan Udara')
 
