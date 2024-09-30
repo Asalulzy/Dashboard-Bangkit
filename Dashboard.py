@@ -23,21 +23,7 @@ def classify_season(temp):
 
 # Load Data
 data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
-
-@st.cache_data
-def load_data():
-    try:
-        return pd.read_csv(data_path)
-    except pd.errors.ParserError as e:
-        st.error(f"Error loading data: {e}")
-        return None
-    except Exception as e:
-        st.error(f"Terjadi kesalahan tak terduga: {e}")
-        return None
-
-data = load_data()
-if data is None:
-    st.stop() 
+data = pd.read_csv(data_path)
 # Memeriksa tipe data kolom
 st.write(data.dtypes)
 
