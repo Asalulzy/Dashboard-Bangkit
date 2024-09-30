@@ -21,13 +21,30 @@ def classify_season(temp):
         return 'Tidak Diketahui'
 
 # Load Data
-data_path = 'https://github.com/Asalulzy/Dashboard-Bangkit/blob/main/all_data.csv'  # Path ke data CSV-mu
-data = pd.read_csv(data_path)
+data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
+
+@st.cache_data
+def load_data():
+    try:
+        return pd.read_csv(data_path)
+    except pd.errors.ParserError as e:
+        st.error(f"Error loading data: {e}")
+        return None
+    except Exception as e:
+        st.error(f"Terjadi kesalahan tak terduga: {e}")
+        return None
+
+data = load_data()
+if data is None:
+    st.stop()  # Berhenti jika data tidak dapat dimuat
+
+# Mengonversi kolom 'datetime' menjadi tipe datetime
+data['datetime'] = pd.to_datetime(data['datetime'])
 
 # Menambahkan kolom musim
 data['Season'] = data['TEMP'].apply(classify_season)
 
-# Streamlit Layout
+# Layout Streamlit
 st.title('Dashboard Analisis Polutan Udara')
 
 # Sidebar untuk pemilihan filter musim
@@ -68,11 +85,11 @@ ax_bar.set_title(f'Rata-rata Konsentrasi Senyawa Udara di Musim {selected_season
 ax_bar.set_ylabel('Konsentrasi (µg/m³)')
 st.pyplot(fig_bar)
 
-# Menampilkan data tabel
+# Menampilkan data tabel terfilter
 st.subheader('Tabel Data Terfilter')
 st.dataframe(filtered_data)
 
-# Menggunakan st.cache_data untuk caching
+# Fungsi untuk mengonversi DataFrame ke CSV
 @st.cache_data
 def convert_df(df):
     return df.to_csv().encode('utf-8')
