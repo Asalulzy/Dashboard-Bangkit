@@ -3,3 +3,4 @@ NumPy==1.26.4
 Seaborn==0.13.1
 Matplotlib==3.7.1
 SciPy version==1.13.1
+streamlit==1.31.1
