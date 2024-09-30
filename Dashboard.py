@@ -11,10 +11,8 @@ def classify_season(temp):
         return 'Musim Dingin'
     elif 10 <= temp < 20:
         return 'Musim Semi'
-    elif 20 <= temp < 30:
+    elif 20 <= temp < 35:
         return 'Musim Panas'
-    elif 30 <= temp < 35:
-        return 'Musim Panas Intens'
     elif temp >= 35:
         return 'Gelombang Panas'
     else:
