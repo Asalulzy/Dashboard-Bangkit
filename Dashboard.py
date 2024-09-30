@@ -24,6 +24,8 @@ def classify_season(temp):
 # Load Data
 data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
 data = pd.read_csv(data_path)
+
+
 # Memeriksa tipe data kolom
 st.write(data.dtypes)
 
