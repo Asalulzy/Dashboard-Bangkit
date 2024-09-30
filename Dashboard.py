@@ -24,10 +24,6 @@ def classify_season(temp):
 data_path = 'https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv'
 data = pd.read_csv(data_path)
 
-# Memeriksa tipe data kolom
-st.write(data.dtypes)
-st.write(data.head())  # Menampilkan beberapa baris pertama
-
 # Menyaring kolom yang diperlukan
 if 'TEMP' in data.columns and 'datetime' in data.columns:
     # Menambahkan kolom musim
