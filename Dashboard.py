@@ -8,7 +8,7 @@ import datetime
 sns.set(style='whitegrid')
 
 
-df = pd.read_csv("https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv")
+df = pd.read_csv("all_data.csv")
 
 # Helper function to classify season based on temperature
 def classify_season(temp):
