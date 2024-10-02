@@ -7,8 +7,7 @@ import datetime
 # Set style for the plots
 sns.set(style='whitegrid')
 
-url = "https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/main/all_data.csv"
-df = pd.read_csv("url")
+df = pd.read_csv("C:/Users/ASUS/OneDrive/Documents/Dashboard/all_data.csv")
 
 # Helper function to classify season based on temperature
 def classify_season(temp):
