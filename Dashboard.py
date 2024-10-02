@@ -66,12 +66,21 @@ st.pyplot(fig)
 # Time-series plot of NO2 over time
 st.subheader('NO2 Concentration Over Time')
 
+# Time-series plot of NO2 over time
+st.subheader('NO2 Concentration Over Time')
+
 fig, ax = plt.subplots(figsize=(10, 6))
 sns.lineplot(x=filtered_data['datetime'], y=filtered_data['NO2'], ax=ax)
 ax.set_title('NO2 Concentration Over Time')
 ax.set_xlabel('Date')
 ax.set_ylabel('NO2 Concentration (µg/m³)')
+
+# Miringkan label waktu 45 derajat
+plt.xticks(rotation=45)
+
 st.pyplot(fig)
+
 
 # Additional plots and analytics can be added similarly
 st.caption('Air Quality Data Dashboard © 2024')
+
