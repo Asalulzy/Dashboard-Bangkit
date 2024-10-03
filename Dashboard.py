@@ -7,7 +7,7 @@ import streamlit as st
 sns.set(style='whitegrid')
 
 
-df = pd.read_csv("all_data.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/Asalulzy/Dashboard-Bangkit/refs/heads/main/all_data.csv")
 
 # Convert 'datetime' column to datetime type if not already
 df['datetime'] = pd.to_datetime(df['datetime'])
